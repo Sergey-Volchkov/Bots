@@ -4,8 +4,8 @@ import random
 from datetime import datetime
 from multiprocessing import Process
 import itisclass
-import itisbot
-login,password = itisbot.data()
+import data
+login,password = data.data()
 global vk_session
 vk_session = vk_api.VkApi(login, password)
 vk_session.auth()
