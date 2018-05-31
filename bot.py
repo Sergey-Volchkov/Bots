@@ -52,9 +52,9 @@ def send_picture(values):
     id_group_cat = -32015300
     id_group_dog = -121355400
     dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели']
+    ans =['Серёга пидор','серега пидор','ты пидор']
     while True:
         response = vk_session.method('messages.get', values)
-
         if response['items']:
             values['last_message_id'] = response['items'][0]['id']
         for item in response['items']:
@@ -65,7 +65,12 @@ def send_picture(values):
                 try:
                     choice_group_and_send(dog, response, item, vk_ses, id_group_dog)
                 except:
-                    pass
+                    try:
+                        ans.index(response)
+                        vk_session.method('messages.send', {'user_id': item['user_id'], 'message': 'Сам пидор!'})
+
+                    except:
+                        pass
         time.sleep(5)
 
 def for_kira_decision():
