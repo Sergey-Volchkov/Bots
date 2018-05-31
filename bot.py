@@ -46,7 +46,6 @@ def send_picture(id_group,values,mas):
         if response['items']:
             values['last_message_id'] = response['items'][0]['id']
         for item in response['items']:
-            print(response['items'][0]['body'].lower())
             response = response['items'][0]['body'].lower()
             try:
                 mas.index(response)
