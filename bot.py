@@ -4,8 +4,8 @@ import random
 from datetime import datetime
 from multiprocessing import Process
 import itisclass
-import itisbot
-login,password = itisbot.data()
+import data
+login,password = data.data()
 global vk_session
 vk_session = vk_api.VkApi(login, password)
 vk_session.auth()
@@ -55,7 +55,6 @@ def send_picture(values):
         if response['items']:
             values['last_message_id'] = response['items'][0]['id']
         for item in response['items']:
-            print(response['items'][0]['body'].lower())
             response = response['items'][0]['body'].lower()
             try:
                 choice_group_and_send(cat, response, item, vk_ses, id_group_cat)
