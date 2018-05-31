@@ -69,11 +69,10 @@ def for_kira_decision():
     clock = datetime.strftime(datetime.now(), "%H:%M:%S").split(':')
     for i in range(len(clock)):
         clock[i] = int(clock[i])
+        if i == 0:
+            clock[i]+=3
     while True:
-        for i in range(len(clock)):
-            clock[i]=int(clock[i])
-            if i == 0:
-                clock[i]+=3
+        
         print(clock)
         hour,minute = 0,0
         if interval(12, 14, clock, hour, minute) == 1 and interval(16, 18, clock, hour, minute) == 1:
