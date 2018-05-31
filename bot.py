@@ -20,7 +20,12 @@ def interval(since,until,clock,hour,minute):
         choice(since, until, clock, hour, minute)
         return 0
     else: return 1
-
+def choice_group_and_send(mas,response,item,vk_ses,id_group):
+    mas.index(response)
+    attachment = itisclass.get_photos(vk_ses, id_group, vk)
+    write_msg(item['user_id'], 'Держи!', attachment)
+    if id_group == -121355400 and item['user_id'] != 111312042:
+        write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment)
 def choice(n, m, clock,hour,minute):
     if not (n <= hour <= m):
         hour = random.randint(int(datetime.strftime(datetime.now(), "%H")), m)
@@ -38,8 +43,12 @@ def choice(n, m, clock,hour,minute):
 def write_msg(user_id, s, attachment):
     vk_session.method('messages.send', {'user_id': user_id, 'message': s, 'attachment': attachment})
 
-def send_picture(id_group,values,mas):
+def send_picture(values):
     vk_ses = vk_session
+    cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','пушистый педрила']
+    id_group_cat = -32015300
+    id_group_dog = -121355400
+    dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели']
     while True:
         response = vk_session.method('messages.get', values)
 
@@ -49,17 +58,13 @@ def send_picture(id_group,values,mas):
             print(response['items'][0]['body'].lower())
             response = response['items'][0]['body'].lower()
             try:
-                mas.index(response)
-
-                attachment = itisclass.get_photos(vk_ses, id_group, vk)
-                write_msg(item['user_id'], 'Держи!', attachment)
-                if id_group == -121355400 and item['user_id'] !=111312042:
-                    write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment)
+                choice_group_and_send(cat, response, item, vk_ses, id_group_cat)
             except:
-                pass
-        time.sleep(10)
-
-
+                try:
+                    choice_group_and_send(dog, response, item, vk_ses, id_group_dog)
+                except:
+                    pass
+        time.sleep(5)
 
 def for_kira_decision():
     clock = datetime.strftime(datetime.now(), "%H:%M:%S").split(':')
@@ -99,18 +104,11 @@ def for_kira_send_picture(clock,hour,minute):
 
 def main():
 
-    dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели']
-    cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','пушистый педрила']
     values = {'out': 0, 'count': 1, 'time_offset': 60}
 
-    p = Process(target=send_picture, args=(-121355400, values, dog,))
-    p1 = Process(target=send_picture, args=(-32015300, values, cat,))
+    p1 = Process(target=send_picture, args=(values,))
     p2 = Process(target=for_kira_decision)
-
-    p.start()
-    time.sleep(5)
     p1.start()
     p2.start()
-
 if __name__ == '__main__':
     main()
