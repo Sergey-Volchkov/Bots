@@ -27,7 +27,8 @@ def choice_group_and_send(mas,response,item,vk_ses,id_group):
     if id_group == -121355400 and item['user_id'] != 111312042:
         write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment)
     if id_group == -121355400 and item['user_id'] == 100426275:
-        write_msg(111312042, 'Пошёл нахуй!')
+        vk_session.method('messages.send', {'user_id': 111312042, 'message': 'Всё равно ты пидр с:'})
+
 def choice(n, m, clock,hour,minute):
     if not (n <= hour <= m):
         hour = random.randint(int(datetime.strftime(datetime.now(), "%H")), m)
