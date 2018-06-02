@@ -14,12 +14,13 @@ vk_session = vk_api.VkApi(login, password)
 vk_session.auth()
 global vk
 vk = vk_session.get_api()
-# del login, password
+del login, password
 
 
 def interval(since,until,clock,hour,minute):
     if since <= int(clock[0]) <= until:
         print('Время после {} до {}'.format(since, until))
+        print('Сейчас ' +str(hour)+':'+str(minute))
         choice(since, until, clock, hour, minute)
         return 0
     else: return 1
@@ -29,12 +30,10 @@ def choice_group_and_send(mas,response,item,vk_ses,id_group):
     write_msg(item['user_id'], 'Держи!', attachment)
     if id_group == -121355400 and item['user_id'] != 111312042:
         write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment)
-    if id_group == -121355400 and item['user_id'] == 100426275:
-        vk_session.method('messages.send', {'user_id': 100426275, 'message': 'Всё равно ты пидр с:'})
 
 def choice(n, m, clock,hour,minute):
     if not (n <= hour <= m):
-        hour = random.randint(int(datetime.strftime(datetime.now(), "%H")), m)
+        hour = random.randint(int(datetime.strftime(datetime.now(), "%H"))+3, m)
         if hour == int(datetime.strftime(datetime.now(), "%H")):
             if int(datetime.strftime(datetime.now(), "%M")) < 40:
                 buf = int(datetime.strftime(datetime.now(), "%M"))
@@ -51,33 +50,36 @@ def write_msg(user_id, s, attachment):
 
 def send_picture(values):
     vk_ses = vk_session
-    cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','пушистый педрила']
+    loli = ['лоли','лольки','loli','лолька','лоля','лоликон','lolikon']
+    cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','котики','коты','cats','пушистый педрила','пушистые педрилы','пушастая педрила','шаверма','шаурма']
+    dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели','псины','пёсики','песики']
     id_group_cat = -32015300
     id_group_dog = -121355400
-    dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели']
-    ans =['Серёга пидор','серега пидор','ты пидор']
+    id_group_loli = -127518015
     while True:
-        response = vk_session.method('messages.get', values)
-        if response['items']:
-            values['last_message_id'] = response['items'][0]['id']
-        for item in response['items']:
-            response = response['items'][0]['body'].lower()
-            try:
-                choice_group_and_send(cat, response, item, vk_ses, id_group_cat)
-            except:
+        try:
+            response = vk_session.method('messages.get', values)
+            if response['items']:
+                print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+                values['last_message_id'] = response['items'][0]['id']
+            for item in response['items']:
+                response = response['items'][0]['body'].lower()
                 try:
-                    choice_group_and_send(dog, response, item, vk_ses, id_group_dog)
+                    choice_group_and_send(cat, response, item, vk_ses, id_group_cat)
                 except:
                     try:
-                        ans.index(response)
-                        vk_session.method('messages.send', {'user_id': item['user_id'], 'message': 'Сам пидор!'})
-
+                        choice_group_and_send(dog, response, item, vk_ses, id_group_dog)
                     except:
-                        pass
-        time.sleep(5)
+
+                        try:
+                            choice_group_and_send(loli,response, item,vk_ses, id_group_loli)
+                        except:
+                            pass
+                        
+            time.sleep(3)
+        except: time.sleep(2)
 
 def for_kira_decision():
-    
     while True:
         clock = datetime.strftime(datetime.now(), "%H:%M:%S").split(':')
         for i in range(len(clock)):
@@ -100,6 +102,7 @@ def for_kira_send_picture(clock,hour,minute):
             clock_m = int(datetime.strftime(datetime.now(), "%M"))
             if minute == clock_m:
                 attachment = itisclass.get_photos(vk_session, -121355400, vk)
+                print('Пикчи для киры:' +str(attachment))
                 write_msg(111312042, 'Время пёселей!', attachment)
                 time.sleep(59)
                 break
