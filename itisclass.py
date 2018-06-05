@@ -10,9 +10,6 @@ def get_photos(vk_session, id_group,vk):
                 attachment ='photo' + str(id_group) + '_' + str(pictures)
             else:
                 attachment =attachment +',' + 'photo' + str(id_group) + '_' + str(pictures)
-            del max_num
-            del num
-            del pictures
         print(attachment)
         return attachment
     except:
