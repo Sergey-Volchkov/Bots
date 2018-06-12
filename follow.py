@@ -1,5 +1,6 @@
 class subscription():
     def parser(self,string,type_fw,user_id):
+        print('парсим')
         if type_fw == 0:
             string = string.split('я хочу подписаться на ')[1]
             return self.follow(string,user_id)
@@ -8,6 +9,7 @@ class subscription():
             return self.unfollow(string, user_id)
 
     def check(self,string,user_id):
+        print('проверяем наличие совпадений в строке')
         if string.find('я хочу подписаться')!= -1:
             try:
                 return self.parser(string,0, user_id)
