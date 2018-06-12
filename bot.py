@@ -90,24 +90,27 @@ def dispatch():
     while True:
         print(int(datetime.strftime(datetime.now(), "%H")))
         if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
-
-            attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
-            for element in d['пёсели']:
-                print('Отправляем пёселей' + str(element))
-                write_msg(element, ' ', attachment)
-
+            try:
+                attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
+                for element in d['пёсели']:
+                    print('Отправляем пёселей' + str(element))
+                    write_msg(element, ' ', attachment)
+            except:pass
             time.sleep(2)
-            attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
-            for element in d['котики']:
-                print('Отправляем котиков' + str(element))
-                write_msg(element, ' ', attachment)
-
+            try:
+                attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
+                for element in d['котики']:
+                    print('Отправляем котиков' + str(element))
+                    write_msg(element, ' ', attachment)
+            except:pass
             time.sleep(2)
-            attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
-            for element in d['лольки']:
+            try:
+                attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
+                for element in d['лольки']:
 
-                print('Отправляем лолей' + str(element))
-                write_msg(element, ' ', attachment)
+                    print('Отправляем лолей' + str(element))
+                    write_msg(element, ' ', attachment)
+            except:pass
         print('В сон на 60 минут')
         time.sleep(3600)
 #     except:
