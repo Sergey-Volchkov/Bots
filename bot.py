@@ -83,39 +83,39 @@ def send_picture(values):
             pass
 
 def dispatch():
-    try:
-        f = open('../subscribers.txt', 'r')
-        d = eval(f.read())
-        f.close()
-        while True:
-            if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
+#     try:
+    f = open('../subscribers.txt', 'r')
+    d = eval(f.read())
+    f.close()
+    while True:
+        if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
 
-                attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
-                for element in d['пёсели']:
-                    print('Отправляем пёселей' + str(element))
-                    write_msg(element, ' ', attachment)
+            attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
+            for element in d['пёсели']:
+                print('Отправляем пёселей' + str(element))
+                write_msg(element, ' ', attachment)
 
-                time.sleep(2)
-                attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
-                for element in d['котики']:
-                    print('Отправляем котиков' + str(element))
-                    write_msg(element, ' ', attachment)
+            time.sleep(2)
+            attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
+            for element in d['котики']:
+                print('Отправляем котиков' + str(element))
+                write_msg(element, ' ', attachment)
 
-                time.sleep(2)
-                attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
-                for element in d['лольки']:
+            time.sleep(2)
+            attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
+            for element in d['лольки']:
 
-                    print('Отправляем лолей' + str(element))
-                    write_msg(element, ' ', attachment)
-            print('В сон на 60 минут')
-            time.sleep(3600)
-    except:
-        print('Файла нет')
-        # d = {'пёсели': [], 'котики': [], 'лольки': [], }
-        # f = open('../subscribers.txt', 'w')
-        # f.write(str(d))
-        # f.close()
-        dispatch()
+                print('Отправляем лолей' + str(element))
+                write_msg(element, ' ', attachment)
+        print('В сон на 60 минут')
+        time.sleep(3600)
+#     except:
+#         print('Файла нет')
+#         # d = {'пёсели': [], 'котики': [], 'лольки': [], }
+#         # f = open('../subscribers.txt', 'w')
+#         # f.write(str(d))
+#         # f.close()
+#         dispatch()
 
 
 
