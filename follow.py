@@ -26,6 +26,7 @@ class subscription():
             try:
                 d = eval(f.read())
             except:
+                print('не получилось прочитать файл, словарь делаем пустым')
                 d = {'пёсели':[],'котики':[],'лольки':[],}
             if string == 'пёселей' or string == 'песелей':
                 d['пёсели'].index(user_id)

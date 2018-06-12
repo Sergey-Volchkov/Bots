@@ -88,8 +88,8 @@ def dispatch():
         d = eval(f.read())
         f.close()
         while True:
-            print('В сон на 60 минут')
-            time.sleep(3600)
+
+
             if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
                 for element in d['пёсели']:
                     attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
@@ -100,6 +100,8 @@ def dispatch():
                 for element in d['лольки']:
                     attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
                     write_msg(element, ' ', attachment)
+            print('В сон на 60 минут')
+            time.sleep(3600)
     except:
         print('Файла нет')
         d = {'пёсели': [], 'котики': [], 'лольки': [], }
