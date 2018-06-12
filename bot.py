@@ -8,22 +8,23 @@ from datetime import datetime
 from multiprocessing import Process
 import itisclass
 import data
+import follow
 login,password = data.data()
 global vk_session
 vk_session = vk_api.VkApi(login, password)
 vk_session.auth()
 global vk
+global id_group_cat
+global id_group_dog
+global id_group_loli
+id_group_cat = -32015300
+id_group_dog = -121355400
+id_group_loli = -127518015
 vk = vk_session.get_api()
 del login, password
 
 
-def interval(since,until,clock,hour,minute):
-    if since <= int(clock[0]) <= until:
-        print('Время после {} до {}'.format(since, until))
-        print('Сейчас ' +str(hour)+':'+str(minute))
-        choice(since, until, clock, hour, minute)
-        return 0
-    else: return 1
+
 def choice_group_and_send(mas,response,item,vk_ses,id_group):
     mas.index(response)
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
@@ -31,31 +32,16 @@ def choice_group_and_send(mas,response,item,vk_ses,id_group):
     if id_group == -121355400 and item['user_id'] != 111312042:
         write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment)
 
-def choice(n, m, clock,hour,minute):
-    if not (n <= hour <= m):
-        hour = random.randint(int(datetime.strftime(datetime.now(), "%H"))+3, m)
-        if hour == int(datetime.strftime(datetime.now(), "%H")):
-            if int(datetime.strftime(datetime.now(), "%M")) < 40:
-                buf = int(datetime.strftime(datetime.now(), "%M"))
-            else:
-                buf = 0
-                hour+=1
-            minute = random.randint(buf, 59)
-        else:
-            minute = random.randint(0, 59)
-    for_kira_send_picture(clock, hour, minute)
-
 def write_msg(user_id, s, attachment):
     vk_session.method('messages.send', {'user_id': user_id, 'message': s, 'attachment': attachment})
 
 def send_picture(values):
     vk_ses = vk_session
-    loli = ['лоли','лольки','loli','лолька','лоля','лоликон','lolikon']
+    loli = ['лоли','лольки','loli','лолька','лоля','лоликон']
     cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','котики','коты','cats','пушистый педрила','пушистые педрилы','пушастая педрила','шаверма','шаурма']
-    dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели','псины','пёсики','песики']
-    id_group_cat = -32015300
-    id_group_dog = -121355400
-    id_group_loli = -127518015
+    dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели','псины','пёсики','песики','хлеп','хлеб','булочка','булочки']
+
+    fw = follow.subscription()
     while True:
         try:
             response = vk_session.method('messages.get', values)
@@ -64,6 +50,18 @@ def send_picture(values):
                 values['last_message_id'] = response['items'][0]['id']
             for item in response['items']:
                 response = response['items'][0]['body'].lower()
+                if response == 'команды':
+                    vk_session.method('messages.send', {'user_id': item['user_id'], 'message': "Команды для бота: \n Для получения лолей напишите что-то из 'лоли', 'лольки', 'loli', 'лолька', 'лоля', 'лоликон'. \n "
+                                                                                               "Для получения котиков напишите что-то из 'котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat', 'котика', 'котики', 'коты', 'cats', 'пушистый педрила', 'пушистые педрилы', 'пушастая педрила', 'шаверма', 'шаурма'.\n"
+                                                                                               "Для получения пёселей напишите что то из 'пёсель', 'собака', 'пёс', 'doge', 'песель', 'псина', 'пёсели', 'песели', 'псины', 'пёсики', 'песики', 'хлеп', 'хлеб', 'булочка', 'булочки'\n"
+                                                                                               "Если хотите подписаться на рассылку чего-либо из этого, напишите 'Я хочу подписаться на --', где вместо -- напишите 'пёселей', 'котиков' или 'лолей'\n"
+                                                                                               "Если хотите отписаться от рассылки чего-либо из подписанного, напишите 'Я хочу отписаться от --', где вместо -- напишите 'пёселей', 'котиков' или 'лолей'\n"
+                                                                                               "Для того, чтобы узнать на что вы подписаны, напишите 'На что я подписан?'\n"
+                                                                                               "Если нашли какие-то баги, нерабочую команду или что-то ещё, то сразу пишите мне"})
+                elif response == 'на что я подписан?' or response == 'на что я подписан':
+                    vk_session.method('messages.send', {'user_id': item['user_id'], 'message':fw.list_of_subscribers(item['user_id'])})
+
+
                 try:
                     choice_group_and_send(cat, response, item, vk_ses, id_group_cat)
                 except:
@@ -73,45 +71,43 @@ def send_picture(values):
 
                         try:
                             choice_group_and_send(loli,response, item,vk_ses, id_group_loli)
-                        except:
-                            pass
-                        
+                        except:pass
+                finally:
+                    try:
+                        vk_session.method('messages.send', {'user_id': item['user_id'],
+                                                            'message': fw.main_f(response, item['user_id'])})
+                    except:
+                        pass
             time.sleep(3)
-        except: time.sleep(2)
+        except:
+            pass
 
-def for_kira_decision():
-    while True:
-        clock = datetime.strftime(datetime.now(), "%H:%M:%S").split(':')
-        for i in range(len(clock)):
-            clock[i] = int(clock[i])
-            if i == 0:
-                clock[i]+=3
-        print(clock)
-        hour,minute = 0,0
-        if interval(12, 14, clock, hour, minute) == 1 and interval(16, 18, clock, hour, minute) == 1:
-            print('В сон на 20 минут')
-            time.sleep(1200)
-
-def for_kira_send_picture(clock,hour,minute):
-    vk_ses = vk_session
-    print(hour, minute)
-    if hour == int(clock[0]):
+def dispatch():
+    try:
+        f = open('../subscribers.txt', 'r')
+        d = eval(f.read())
+        f.close()
         while True:
-            print('проверяем совпадение минут')
-            print((datetime.strftime(datetime.now(), "%M"), minute))
-            clock_m = int(datetime.strftime(datetime.now(), "%M"))
-            if minute == clock_m:
-                attachment = itisclass.get_photos(vk_session, -121355400, vk)
-                print('Пикчи для киры:' +str(attachment))
-                write_msg(111312042, 'Время пёселей!', attachment)
-                time.sleep(59)
-                break
-            time.sleep(59)
-    else:
-        if int(datetime.strftime(datetime.now(), "%H")) >= 23:
-            del hour
-            del minute
-        time.sleep(1200)
+            print('В сон на 60 минут')
+            time.sleep(3600)
+            if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
+                for element in d['пёсели']:
+                    attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
+                    write_msg(element, ' ', attachment)
+                for element in d['котики']:
+                    attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
+                    write_msg(element, ' ', attachment)
+                for element in d['лольки']:
+                    attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
+                    write_msg(element, ' ', attachment)
+    except:
+        print('Файла нет')
+        d = {'пёсели': [], 'котики': [], 'лольки': [], }
+        f = open('../subscribers.txt', 'w')
+        f.write(str(d))
+        f.close()
+        dispatch()
+
 
 
 def main():
@@ -119,7 +115,7 @@ def main():
     values = {'out': 0, 'count': 1, 'time_offset': 60}
 
     p1 = Process(target=send_picture, args=(values,))
-    p2 = Process(target=for_kira_decision)
+    p2 = Process(target=dispatch)
     p1.start()
     p2.start()
 if __name__ == '__main__':
