@@ -38,7 +38,7 @@ def write_msg(user_id, s, attachment):
 def send_picture(values):
     vk_ses = vk_session
     loli = ['лоли','лольки','loli','лолька','лоля','лоликон']
-    cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','котики','коты','cats','пушистый педрила','пушистые педрилы','пушастая педрила','шаверма','шаурма']
+    cat = ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat','котика','котики','коты','cats','пушистый педрила','пушистые педрилы','пушистые пидрилы','пушистая педрила','пушастый пидрила','шаверма','шаурма']
     dog = ['пёсель','собака','пёс','doge','песель','псина','пёсели','песели','псины','пёсики','песики','хлеп','хлеб','булочка','булочки']
 
     fw = follow.subscription()
@@ -78,7 +78,7 @@ def send_picture(values):
                                                             'message': fw.main_f(response, item['user_id'])})
                     except:
                         pass
-            time.sleep(3)
+            time.sleep(1)
         except:
             pass
 
@@ -121,7 +121,7 @@ def dispatch():
 
 def main():
 
-    values = {'out': 0, 'count': 1, 'time_offset': 60}
+    values = {'out': 0, 'count': 20, 'time_offset': 120}
 
     p1 = Process(target=send_picture, args=(values,))
     p2 = Process(target=dispatch)
