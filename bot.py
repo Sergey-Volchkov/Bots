@@ -78,7 +78,7 @@ def send_picture(values):
                                                             'message': fw.main_f(response, item['user_id'])})
                     except:
                         pass
-            time.sleep(1)
+            time.sleep(3)
         except:
             pass
 
@@ -88,6 +88,7 @@ def dispatch():
     d = eval(f.read())
     f.close()
     while True:
+        print(int(datetime.strftime(datetime.now(), "%H")))
         if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
 
             attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
