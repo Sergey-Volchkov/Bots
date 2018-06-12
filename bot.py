@@ -17,7 +17,7 @@ global vk
 global id_group_cat
 global id_group_dog
 global id_group_loli
-id_group_cat = -32015300
+id_group_cat = -130670107
 id_group_dog = -121355400
 id_group_loli = -127518015
 vk = vk_session.get_api()
