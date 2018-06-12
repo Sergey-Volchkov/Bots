@@ -93,17 +93,19 @@ def dispatch():
                     attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
                     for element in d['пёсели']:
                         write_msg(element, ' ', attachment)
+                        print('Отправляем пёселей' + str(element))
                 except:pass
                 try:
                     attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
                     for element in d['котики']:
                         write_msg(element, ' ', attachment)
+                        print('Отправляем пёселей' + str(element))
                 except:pass
                 try:
                     attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
-
                     for element in d['лольки']:
                         write_msg(element, ' ', attachment)
+                        print('Отправляем лолей' + str(element))
                 except:pass
             print('В сон на 60 минут')
             time.sleep(3600)
