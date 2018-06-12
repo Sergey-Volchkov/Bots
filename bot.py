@@ -90,28 +90,29 @@ def dispatch():
         while True:
             if 22 > int(datetime.strftime(datetime.now(), "%H")) > 9:
                 try:
+                    attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
                     for element in d['пёсели']:
-                        attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
                         write_msg(element, ' ', attachment)
                 except:pass
                 try:
+                    attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
                     for element in d['котики']:
-                        attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
                         write_msg(element, ' ', attachment)
                 except:pass
                 try:
+                    attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
+
                     for element in d['лольки']:
-                        attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
                         write_msg(element, ' ', attachment)
                 except:pass
             print('В сон на 60 минут')
             time.sleep(3600)
     except:
         print('Файла нет')
-        d = {'пёсели': [], 'котики': [], 'лольки': [], }
-        f = open('../subscribers.txt', 'w')
-        f.write(str(d))
-        f.close()
+        # d = {'пёсели': [], 'котики': [], 'лольки': [], }
+        # f = open('../subscribers.txt', 'w')
+        # f.write(str(d))
+        # f.close()
         dispatch()
 
 
