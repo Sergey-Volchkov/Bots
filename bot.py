@@ -78,7 +78,7 @@ def send_picture(values):
                                                             'message': fw.main_f(response, item['user_id'])})
                     except:
                         pass
-            time.sleep(3)
+            time.sleep(1)
         except:
             pass
 
