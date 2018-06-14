@@ -84,10 +84,11 @@ def send_picture(values):
 
 def dispatch():
 #     try:
-    f = open('../subscribers.txt', 'r')
-    d = eval(f.read())
-    f.close()
+    
     while True:
+        f = open('../subscribers.txt', 'r')
+        d = eval(f.read())
+        f.close()
         print(int(datetime.strftime(datetime.now(), "%H")))
         if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 > 9:
             try:
