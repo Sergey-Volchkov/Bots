@@ -57,6 +57,7 @@ def send_picture(values):
                                                                                                "Если хотите подписаться на рассылку чего-либо из этого, напишите 'Я хочу подписаться на --', где вместо -- напишите 'пёселей', 'котиков' или 'лолей'\n \n"
                                                                                                "Если хотите отписаться от рассылки чего-либо из подписанного, напишите 'Я хочу отписаться от --', где вместо -- напишите 'пёселей', 'котиков' или 'лолей'\n \n"
                                                                                                "Для того, чтобы узнать на что вы подписаны, напишите 'На что я подписан?'\n\n"
+                                                                                               "C 22:00 до 8:00 рассылка не производится, чтобы не будить вас ночью'\n\n" 
                                                                                                "Если нашли какие-то баги, нерабочую команду или что-то ещё, то сразу пишите мне"})
                 elif response == 'на что я подписан?' or response == 'на что я подписан':
                     vk_session.method('messages.send', {'user_id': item['user_id'], 'message':fw.list_of_subscribers(item['user_id'])})
@@ -90,7 +91,7 @@ def dispatch():
         d = eval(f.read())
         f.close()
         print(int(datetime.strftime(datetime.now(), "%H")))
-        if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 > 9:
+        if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 => 8:
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
                 for element in d['пёсели']:
