@@ -91,7 +91,7 @@ def dispatch():
         d = eval(f.read())
         f.close()
         print(int(datetime.strftime(datetime.now(), "%H")))
-        if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 => 8:
+        if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 >= 8:
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
                 for element in d['пёсели']:
