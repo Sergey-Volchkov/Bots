@@ -56,7 +56,6 @@ def send_picture(values):
             for item in response['items']:
                 response = response['items'][0]['body'].lower()
                 print(item['user_id'])
-                print(item)
                 if item.get('chat_id') == None:
                     if response == 'команды':
                         vk_session.method('messages.send', {'user_id': item['user_id'], 'message': "Команды для бота: \n Для получения лолей напишите что-то из 'лоли', 'лольки', 'loli', 'лолька', 'лоля', 'лоликон'. \n \n"
