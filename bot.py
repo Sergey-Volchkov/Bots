@@ -103,21 +103,16 @@ def dispatch():
     while True:
         f = open('../subscribers.txt', 'r')
         d = eval(f.read())
-        print(d)
         f.close()
         print(int(datetime.strftime(datetime.now(), "%H")))
         if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 >= 8:
-#             try:
-            attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
-            print(d['пёсели'])
-            print()
-            print(attachment)
-            for element in d['пёсели']:
-                print(element)
-                print('Отправляем пёселей' + str(element))
-                write_msg(element, ' ', itisclass.get_photos(vk_session, id_group_dog, vk),'user_id')
-#                 time.sleep(5)
-#             except:print('упало на пёселях')
+            try:
+                attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
+                for element in d['пёсели']:
+                    print('Отправляем пёселей' + str(element))
+                    write_msg(element, ' ', attachment,'user_id')
+                    time.sleep(5)
+            except:pass
             time.sleep(5)
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
