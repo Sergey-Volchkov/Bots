@@ -108,9 +108,9 @@ def dispatch():
         print(int(datetime.strftime(datetime.now(), "%H")))
         if 22 > int(datetime.strftime(datetime.now(), "%H"))+3 >= 8:
 #             try:
-            attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
+            a = itisclass.get_photos(vk_session, id_group_dog, vk)
             print(d['пёсели'])
-            print(attachment)
+            print(a)
             for element in d['пёсели']:
                 print(element)
                 print('Отправляем пёселей' + str(element))
