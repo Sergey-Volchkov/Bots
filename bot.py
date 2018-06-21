@@ -113,8 +113,7 @@ def dispatch():
                 for element in d['пёсели']:
                     print('Отправляем пёселей' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
-                    time.sleep(5)
-            except:pass
+            except:print('упало на пёселях')
             time.sleep(5)
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
