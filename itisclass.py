@@ -13,4 +13,4 @@ def get_photos(vk_session, id_group,vk):
         print(attachment)
         return attachment
     except:
-        get_photos(vk_session, id_group, vk)
+       return get_photos(vk_session, id_group, vk)
