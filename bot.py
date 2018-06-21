@@ -112,6 +112,7 @@ def dispatch():
                 for element in d['пёсели']:
                     print('Отправляем пёселей' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
+                    time.sleep(5)
             except:pass
             time.sleep(2)
             try:
@@ -119,14 +120,16 @@ def dispatch():
                 for element in d['котики']:
                     print('Отправляем котиков' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
+                    time.sleep(5)
             except:pass
             time.sleep(2)
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
                 for element in d['лольки']:
-
                     print('Отправляем лолей' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
+                    time.sleep(5)
+
             except:pass
         print('В сон на 60 минут')
         time.sleep(3600)
