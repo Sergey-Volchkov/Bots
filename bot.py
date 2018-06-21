@@ -113,6 +113,7 @@ def dispatch():
                 for element in d['пёсели']:
                     print('Отправляем пёселей' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
+                    time.sleep(5)
             except:print('упало на пёселях')
             time.sleep(5)
             try:
