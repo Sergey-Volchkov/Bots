@@ -17,7 +17,6 @@ global vk
 global id_group_cat
 global id_group_dog
 global id_group_loli
-global attachment
 id_group_cat = -130670107
 id_group_dog = -121355400
 id_group_loli = -127518015
@@ -110,11 +109,8 @@ def dispatch():
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_dog, vk)
                 for element in d['пёсели']:
-                    a = attachment
-                    print(a)
-                    print(attachment)
                     print('Отправляем пёселей' + str(element))
-                    write_msg(element, ' ', a,'user_id')
+                    write_msg(element, ' ', attachment,'user_id')
                     time.sleep(5)
             except:pass
             time.sleep(5)
