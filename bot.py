@@ -113,7 +113,7 @@ def dispatch():
                         print('Отправляем пёселей ' + str(element))
                         write_msg(element, ' ', attachment,'user_id')
                         time.sleep(5)
-                    except Exception as er:print('Пёселей не удалось отправить пользователю ' + str(element) + 'из-за ' + str(er)
+                    except Exception as er:print('Пёселей не удалось отправить пользователю ' + str(element) + 'из-за ' + str(er))
             except Exception as er:print(er)
             time.sleep(5)
             try:
@@ -123,7 +123,7 @@ def dispatch():
                         print('Отправляем котиков ' + str(element))
                         write_msg(element, ' ', attachment,'user_id')
                         time.sleep(5)
-                    except Exception as er:print('Котеек не удалось отправить пользователю ' + str(element) + 'из-за ' + str(er)
+                    except Exception as er:print('Котеек не удалось отправить пользователю ' + str(element) + 'из-за ' + str(er))
             except Exception as er:print(er)
             time.sleep(5)
             try:
@@ -133,7 +133,7 @@ def dispatch():
                         print('Отправляем лолей ' + str(element))
                         write_msg(element, ' ', attachment,'user_id')
                         time.sleep(5)
-                    except Exception as er:print('Лолей не удалось отправить пользователю ' + str(element) + 'из-за ' + str(er)
+                    except Exception as er:print('Лолей не удалось отправить пользователю ' + str(element) + 'из-за ' + str(er))
             except Exception as er:print(er)
         print('В сон на 60 минут')
         time.sleep(10800)
