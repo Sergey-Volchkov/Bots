@@ -130,7 +130,7 @@ def dispatch():
                     time.sleep(5)
             except:pass
         print('В сон на 60 минут')
-        time.sleep(3600)
+        time.sleep(10800)
 #     except:
 #         print('Файла нет')
 #         # d = {'пёсели': [], 'котики': [], 'лольки': [], }
