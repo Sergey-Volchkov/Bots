@@ -112,7 +112,7 @@ def dispatch():
                     print('Отправляем пёселей' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
                     time.sleep(5)
-            except:pass
+            except Exception as er:print(er)
             time.sleep(5)
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_cat, vk)
@@ -120,7 +120,7 @@ def dispatch():
                     print('Отправляем котиков' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
                     time.sleep(5)
-            except:pass
+            except Exception as er:print(er)
             time.sleep(5)
             try:
                 attachment = itisclass.get_photos(vk_session, id_group_loli, vk)
@@ -128,7 +128,7 @@ def dispatch():
                     print('Отправляем лолей' + str(element))
                     write_msg(element, ' ', attachment,'user_id')
                     time.sleep(5)
-            except:pass
+            except Exception as er:print(er)
         print('В сон на 60 минут')
         time.sleep(10800)
 #     except:
