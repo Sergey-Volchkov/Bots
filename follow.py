@@ -24,30 +24,38 @@ class subscription():
     def follow(self,string,user_id):
         try:
             #Проверяем, не записывается ли человек повторно
+            print('Открываем файл...')
             f = open('../subscribers.txt', 'r')
+            print('Файл открыли')
             try:
                 d = eval(f.read())
+                print('Прочитали файл')
             except:
                 print('не получилось прочитать файл, словарь делаем пустым')
+            print(string)
             if string == 'пёселей' or string == 'песелей':
-                d['пёсели'].index(user_id)
+                d['dog'].index(user_id)
                 return 'Вы уже подписаны'
             elif string == 'котиков' or string == 'котеек':
-                d['котики'].index(user_id)
+                d['cat'].index(user_id)
                 return 'Вы уже подписаны'
             elif string == 'лолей' or string == 'лолек':
-                d['лольки'].index(user_id)
+                d['loli'].index(user_id)
+            elif string == 'лис' or string == 'лисичек':
+                d['fox'].index(user_id)
                 return 'Вы уже подписаны'
             else:
                 return "Запросили подписаться на что-то несуществующее, попробуйте ещё раз"
 
         except :
             if string == 'пёселей' or string == 'песелей':
-                d['пёсели'].append(user_id)
+                d['dog'].append(user_id)
             elif string == 'котиков' or string == 'котеек':
-                d['котики'].append(user_id)
+                d['cat'].append(user_id)
             elif string == 'лолей' or string == 'лолек':
-                d['лольки'].append(user_id)
+                d['loli'].append(user_id)
+            elif string == 'лис' or string == 'лисичек':
+                d['fox'].append(user_id)
             f = open('../subscribers.txt', 'w')
             f.write(str(d))
             return 'Вы успешно подписаны на ' + string
@@ -59,18 +67,20 @@ class subscription():
         f = open('../subscribers.txt', 'w')
         f.write(str(d))
         f.close()
-        return str(name.capitalize()) + ' больше вас не побеспокоят'
+        return 'Они больше вас не побеспокоят'
     def unfollow(self,string,user_id):
         try:
             f = open('../subscribers.txt', 'r')
             d = eval(f.read())
             f.close()
             if string == 'пёселей' or string == 'песелей':
-                return(self.del_from_file(d,user_id,'пёсели'))
+                return(self.del_from_file(d,user_id,'dog'))
             elif string == 'котиков' or string == 'котеек':
-                return (self.del_from_file(d,user_id,'котики'))
+                return (self.del_from_file(d,user_id,'cat'))
             elif string == 'лолей' or string == 'лолек':
-                return (self.del_from_file(d,user_id,'лольки'))
+                return (self.del_from_file(d,user_id,'loli'))
+            elif string == 'лис' or string == 'лисичек':
+                return (self.del_from_file(d,user_id,'fox'))
             else: return "Запросили отписаться от чего-то несуществующего"
         except:
             return 'Не удалось отписаться'
@@ -83,18 +93,22 @@ class subscription():
             f = open('../subscribers.txt', 'r')
             d = eval(f.read())
             try:
-                d['пёсели'].index(user_id)
+                d['dog'].index(user_id)
                 buf +=' пёселей'
             except:
                 pass
             try:
-                d['котики'].index(user_id)
+                d['cat'].index(user_id)
                 buf +=' котиков'
             except:
                 pass
             try:
-                d['лольки'].index(user_id)
+                d['loli'].index(user_id)
                 buf += ' лолек'
+            except:pass
+            try:
+                d['fox'].index(user_id)
+                buf += ' лисичек'
             except:pass
             if len(buf)>2:
                 return 'Вы подписаны на' + buf
