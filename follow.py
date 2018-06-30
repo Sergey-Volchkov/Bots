@@ -1,29 +1,29 @@
 class subscription():
-    def parser(self,string,type_fw,user_id):
+    def parser(self, string, type_fw, user_id, all_commands):
         print('парсим')
         if type_fw == 0:
             string = string.split('я хочу подписаться на ')[1]
-            return self.follow(string,user_id)
+            return self.follow(string, user_id, all_commands)
         else:
             string = string.split('я хочу отписаться от ')[1]
-            return self.unfollow(string, user_id)
+            return self.unfollow(string, user_id, all_commands)
 
-    def check(self,string,user_id):
-        print('проверяем наличие совпадений в строке')
-        if string.find('я хочу подписаться')!= -1:
+    def check(self, string, user_id, all_commands):
+        print('Проверяем наличие совпадений в строке')
+        if string.find('я хочу подписаться') != -1:
             try:
-                return self.parser(string,0, user_id)
+                return self.parser(string, 0, user_id, all_commands)
             except:
                 return 'Неверно написали строку'
-        elif string.find('я хочу отписаться')!= -1:
+        elif string.find('я хочу отписаться') != -1:
             try:
-                return self.parser(string,1,user_id)
+                return self.parser(string, 1, user_id, all_commands)
             except:
                 return 'Неверно написали строку'
 
-    def follow(self,string,user_id):
+    def follow(self, string, user_id, all_commands):
         try:
-            #Проверяем, не записывается ли человек повторно
+            # Проверяем, не записывается ли человек повторно
             print('Открываем файл...')
             f = open('../subscribers.txt', 'r')
             print('Файл открыли')
@@ -31,94 +31,73 @@ class subscription():
                 d = eval(f.read())
                 print('Прочитали файл')
             except:
-                print('не получилось прочитать файл, словарь делаем пустым')
+                print('Не получилось прочитать файл')
             print(string)
-            if string == 'пёселей' or string == 'песелей':
-                d['dog'].index(user_id)
-                return 'Вы уже подписаны'
-            elif string == 'котиков' or string == 'котеек':
-                d['cat'].index(user_id)
-                return 'Вы уже подписаны'
-            elif string == 'лолей' or string == 'лолек':
-                d['loli'].index(user_id)
-            elif string == 'лис' or string == 'лисичек':
-                d['fox'].index(user_id)
-                return 'Вы уже подписаны'
-            else:
+            flag = 0
+            for key in all_commands:
+                if string == all_commands[key][2]:
+                    d[key].index(user_id)
+                    flag = 1
+                    return 'Вы уже подписаны'
+            if flag == 0:
                 return "Запросили подписаться на что-то несуществующее, попробуйте ещё раз"
 
-        except :
-            if string == 'пёселей' or string == 'песелей':
-                d['dog'].append(user_id)
-            elif string == 'котиков' or string == 'котеек':
-                d['cat'].append(user_id)
-            elif string == 'лолей' or string == 'лолек':
-                d['loli'].append(user_id)
-            elif string == 'лис' or string == 'лисичек':
-                d['fox'].append(user_id)
+        except:
+            for key in all_commands:
+                if string == all_commands[key][2]:
+                    d[key].append(user_id)
+                    break
             f = open('../subscribers.txt', 'w')
             f.write(str(d))
             return 'Вы успешно подписаны на ' + string
         finally:
             f.close()
 
-    def del_from_file(self,d,user_id,name):
+    def del_from_file(self, d, user_id, name):
         d[name].remove(user_id)
         f = open('../subscribers.txt', 'w')
         f.write(str(d))
         f.close()
         return 'Они больше вас не побеспокоят'
-    def unfollow(self,string,user_id):
+
+    def unfollow(self, string, user_id, all_commands):
         try:
             f = open('../subscribers.txt', 'r')
             d = eval(f.read())
             f.close()
-            if string == 'пёселей' or string == 'песелей':
-                return(self.del_from_file(d,user_id,'dog'))
-            elif string == 'котиков' or string == 'котеек':
-                return (self.del_from_file(d,user_id,'cat'))
-            elif string == 'лолей' or string == 'лолек':
-                return (self.del_from_file(d,user_id,'loli'))
-            elif string == 'лис' or string == 'лисичек':
-                return (self.del_from_file(d,user_id,'fox'))
-            else: return "Запросили отписаться от чего-то несуществующего"
+            flag = 0
+            for key in all_commands:
+                if string == all_commands[key][2]:
+                    d[key].append(user_id)
+                    flag =1
+                    return (self.del_from_file(d, user_id, key))
+            if flag == 0:
+                return "Запросили отписаться от чего-то несуществующего"
         except:
             return 'Не удалось отписаться'
         finally:
             f.close()
 
-    def list_of_subscribers(self,user_id):
-        buf=''
+    def list_of_subscribers(self, user_id, all_commands):
+        buf = ''
         try:
             f = open('../subscribers.txt', 'r')
             d = eval(f.read())
-            try:
-                d['dog'].index(user_id)
-                buf +=' пёселей'
-            except:
-                pass
-            try:
-                d['cat'].index(user_id)
-                buf +=' котиков'
-            except:
-                pass
-            try:
-                d['loli'].index(user_id)
-                buf += ' лолек'
-            except:pass
-            try:
-                d['fox'].index(user_id)
-                buf += ' лисичек'
-            except:pass
-            if len(buf)>2:
+            for key in all_commands:
+                try:
+                    d[key].index(user_id)
+                    buf += ' ' + str(all_commands[key][2])
+                except:
+                    pass
+            if len(buf) > 2:
                 return 'Вы подписаны на' + buf
             else:
                 return 'Вы ни на что не подписаны'
         except:
             return 'Произошла ошибка при выведении списка подписок'
 
-    def main_f(self, string,user_id):
+    def main_f(self, string, user_id, all_commands):
         try:
-            return self.check(string,user_id)
+            return self.check(string, user_id, all_commands)
         except:
             pass
