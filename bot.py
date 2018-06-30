@@ -116,6 +116,7 @@ def dispatch_module(vk_session, id_groups, vk, d):
 def dispatch(id_groups):
     # try:
     while True:
+        time.sleep(10800)
         f = open('../subscribers.txt', 'r')
         d = eval(f.read())
         f.close()
@@ -123,7 +124,6 @@ def dispatch(id_groups):
         if 22 > int(datetime.strftime(datetime.now(), "%H")) + 3 >= 8:
             dispatch_module(vk_session, id_groups, vk, d)
         print('В сон на 60 минут')
-        time.sleep(10800)
 
     # except FileNotFoundError:
     #     print('Файла нет')
