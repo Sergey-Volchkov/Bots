@@ -29,6 +29,7 @@ def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
     if item.get('chat_id') == None:
         print('До отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
         write_msg(item[id], 'Держи!', attachment, id)
+        print('После отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
         if id_group == -121355400 and item[id] != 111312042:
             write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
     else:
