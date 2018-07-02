@@ -24,12 +24,12 @@ del login, password
 
 def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
     mas.index(response)
-    print('До получения пикч ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+#     print('До получения пикч ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
     if item.get('chat_id') == None:
-        print('До отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+#         print('До отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
         write_msg(item[id], 'Держи!', attachment, id)
-        print('После отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+#         print('После отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
         if id_group == -121355400 and item[id] != 111312042:
             write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
     else:
@@ -58,9 +58,8 @@ def commands(item):
 def check_message(all_commands, response, item, vk_ses, id, fw):
     for key in all_commands:
         try:
-            print('До choice_group_and_send ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
             choice_group_and_send(all_commands[key][1], response, item, vk_ses, all_commands[key][0], id)
-            print('После choice_group_and_send ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
+
             break
         except:
             pass
@@ -91,7 +90,6 @@ def send_picture(values, all_commands):
                         vk_session.method('messages.send', {'user_id': item['user_id'],
                                                             'message': fw.list_of_subscribers(item['user_id'],
                                                                                               all_commands)})
-                    print('До чека ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                     check_message(all_commands, response, item, vk_ses, 'user_id', fw)
                 else:
                     print(item['chat_id'])
