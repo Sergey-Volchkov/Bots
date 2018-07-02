@@ -68,7 +68,6 @@ class subscription():
             flag = 0
             for key in all_commands:
                 if string == all_commands[key][2]:
-                    d[key].append(user_id)
                     flag =1
                     return (self.del_from_file(d, user_id, key))
             if flag == 0:
