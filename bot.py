@@ -58,8 +58,9 @@ def commands(item):
 def check_message(all_commands, response, item, vk_ses, id, fw):
     for key in all_commands:
         try:
+            print('Проверяем на наличие ' + str(key) + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
             choice_group_and_send(all_commands[key][1], response, item, vk_ses, all_commands[key][0], id)
-            print('Отправили ' + str(key))
+            print('Отправили ' + str(key) + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
         except:
             pass
     if id == 'user_id':
@@ -90,6 +91,7 @@ def send_picture(values, all_commands):
                         vk_session.method('messages.send', {'user_id': item['user_id'],
                                                             'message': fw.list_of_subscribers(item['user_id'],
                                                                                               all_commands)})
+                    print('До чека ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                     check_message(all_commands, response, item, vk_ses, 'user_id', fw)
                 else:
                     print(item['chat_id'])
