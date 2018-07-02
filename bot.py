@@ -26,13 +26,10 @@ def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
     mas.index(response)
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
     if item.get('chat_id') == None:
-        print('Отправляем пользователю')
         write_msg(item[id], 'Держи!', attachment, id)
         if id_group == -121355400 and item[id] != 111312042:
             write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
     else:
-        print('отправляем в группу')
-        print(id)
         write_msg(item[id], 'Держите!', attachment, id)
 
 
@@ -58,7 +55,9 @@ def commands(item):
 def check_message(all_commands, response, item, vk_ses, id, fw):
     for key in all_commands:
         try:
+            print('До choice_group_and_send ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
             choice_group_and_send(all_commands[key][1], response, item, vk_ses, all_commands[key][0], id)
+            print('После choice_group_and_send ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
             break
         except:
             pass
@@ -80,7 +79,6 @@ def send_picture(values, all_commands):
                 print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                 response['items'].reverse()
             for item in response['items']:
-                print(item['body'])
                 response = item['body'].lower()
                 if item.get('chat_id') == None:
                     print(item['user_id'])
