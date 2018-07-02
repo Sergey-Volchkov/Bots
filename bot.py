@@ -24,8 +24,10 @@ del login, password
 
 def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
     mas.index(response)
+    print('До получения пикч ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
     if item.get('chat_id') == None:
+        print('До отправки сообщения ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
         write_msg(item[id], 'Держи!', attachment, id)
         if id_group == -121355400 and item[id] != 111312042:
             write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
