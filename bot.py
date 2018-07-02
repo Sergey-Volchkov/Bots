@@ -78,9 +78,11 @@ def send_picture(values, all_commands):
             response = vk_session.method('messages.get', values)
             if response['items']:
                 print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
-                values['last_message_id'] = response['items'][0]['id']
+                response['items'].reverse()
+                print(response)
             for item in response['items']:
-                response = response['items'][0]['body'].lower()
+                print(item['body'])
+                response = item['body'].lower()
                 if item.get('chat_id') == None:
                     print(item['user_id'])
                     if response == 'команды':
@@ -93,6 +95,8 @@ def send_picture(values, all_commands):
                 else:
                     print(item['chat_id'])
                     check_message(all_commands, response, item, vk_ses, 'chat_id', fw)
+                values['last_message_id'] = item['id']
+
             time.sleep(1)
         except:
             pass
