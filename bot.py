@@ -79,7 +79,6 @@ def send_picture(values, all_commands):
             if response['items']:
                 print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                 response['items'].reverse()
-                print(response)
             for item in response['items']:
                 print(item['body'])
                 response = item['body'].lower()
