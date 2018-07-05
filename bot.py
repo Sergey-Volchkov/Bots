@@ -21,7 +21,6 @@ vk = vk_session.get_api()
 del login, password
 
 def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
-
     mas.index(response)
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
     if id == 'user_id':
@@ -29,6 +28,7 @@ def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
         if id_group == -121355400 and item != 111312042:
             write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
     else:
+        print(item)
         write_msg(item, 'Держите!', attachment, id)
 
 
@@ -73,10 +73,11 @@ def send_picture(all_commands):
     while True:
         try:
             for event in longpoll.listen():
-                if event.type == VkEventType.MESSAGE_NEW and not(event.from_me):
+                if event.type == VkEventType.MESSAGE_NEW:
                     print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                     response = event.text.lower()
-                    if event.from_user:
+                    print(response)
+                    if event.from_user and not(event.from_me):
                         print(event.user_id)
                         if response == 'команды':
                             commands(event.user_id)
@@ -86,8 +87,10 @@ def send_picture(all_commands):
                                                                                                   all_commands)})
                         check_message(all_commands, response, event.user_id, vk_ses, 'user_id', fw)
                     else:
+                        if response == 'команды':
+                            commands(event.chat_id)
                         print(event.chat_id)
-                        check_message(all_commands, response, event.group_id, vk_ses, 'chat_id', fw)
+                        check_message(all_commands, response, event.chat_id, vk_ses, 'chat_id', fw)
                     time.sleep(2)
         except:
             pass
