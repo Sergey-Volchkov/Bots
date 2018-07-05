@@ -73,7 +73,7 @@ def send_picture(all_commands):
     while True:
         try:
             for event in longpoll.listen():
-                if event.type == VkEventType.MESSAGE_NEW:
+                if event.type == VkEventType.MESSAGE_NEW and not(event.from_me):
                     print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                     response = event.text.lower()
                     if event.from_user:
@@ -88,6 +88,7 @@ def send_picture(all_commands):
                     else:
                         print(event.chat_id)
                         check_message(all_commands, response, event.group_id, vk_ses, 'chat_id', fw)
+                    time.sleep(2)
         except:
             pass
 
@@ -110,6 +111,7 @@ def dispatch_module(vk_session, id_groups, vk, d):
 def dispatch(id_groups):
     # try:
     while True:
+        time.sleep(10800)
         f = open('../subscribers.txt', 'r')
         d = eval(f.read())
         f.close()
@@ -117,7 +119,6 @@ def dispatch(id_groups):
         if 22 > int(datetime.strftime(datetime.now(), "%H")) + 3 >= 8:
             dispatch_module(vk_session, id_groups, vk, d)
         print('В сон на 60 минут')
-        time.sleep(10800)
 
     # except FileNotFoundError:
     #     print('Файла нет')
