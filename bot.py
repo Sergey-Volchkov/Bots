@@ -36,7 +36,7 @@ def write_msg(user_id, s, attachment, id):
     vk_session.method('messages.send', {id: user_id, 'message': s, 'attachment': attachment})
 
 
-def commands(user_id):
+def command_for_user(user_id):
     vk_session.method('messages.send', {'user_id': user_id,
                                         'message': "Команды для бота: \n\n Для получения лолей напишите что-то из 'лоли', 'лольки', 'loli', 'лолька', 'лоля', 'лоликон'.\n \n"
                                                    " Для получения котиков напишите что-то из 'котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat', 'котика', 'котики', 'коты', 'cats', 'пушистый педрила','киса','котейка','котейки','кисы', 'пушистые педрилы', 'пушистые пидрилы', 'пушистая педрила', 'пушастый пидрила', 'шаверма', 'шаурма', 'котя'.\n \n"
@@ -48,6 +48,16 @@ def commands(user_id):
                                                    "При подписке вы так же будете получать информацию об обновлениях бота.\n\n"
                                                    "Для того, чтобы узнать на что вы подписаны, напишите 'На что я подписан?'\n\n"
                                                    "C 22:00 до 8:00 рассылка не производится, чтобы не будить вас ночью.'\n\n"
+                                                   "Если нашли какие-то баги, нерабочую команду или что-то ещё, то сразу пишите мне."})
+
+
+def command_for_chat(chat_id):
+    vk_session.method('messages.send', {'chat_id': chat_id,
+                                        'message': "Команды для бота: \n\n Для получения лолей напишите что-то из 'лоли', 'лольки', 'loli', 'лолька', 'лоля', 'лоликон'.\n \n"
+                                                   " Для получения котиков напишите что-то из 'котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat', 'котика', 'котики', 'коты', 'cats', 'пушистый педрила','киса','котейка','котейки','кисы', 'пушистые педрилы', 'пушистые пидрилы', 'пушистая педрила', 'пушастый пидрила', 'шаверма', 'шаурма', 'котя'.\n \n"
+                                                   "Для получения пёселей напишите что-то из 'пёсель', 'собака', 'пёс', 'doge', 'песель', 'псина', 'пёсели', 'песели', 'псины', 'пёсики', 'песики', 'хлеп', 'хлеб', 'булочка', 'булочки', 'собакен', 'собакены', 'dog', 'dogs'.\n \n"
+                                                   "Для получения лис напишите что-то из 'лиса', 'лисы', 'лисичка', 'лисички','foxes' ,'фокс', 'фоксы', 'fox'.\n \n"
+                                                   "Для получения сов напишите что-то из 'совы', 'совушки', 'сов', 'owl', 'owls', 'сова'.\n \n"
                                                    "Если нашли какие-то баги, нерабочую команду или что-то ещё, то сразу пишите мне."})
 
 
@@ -80,7 +90,7 @@ def send_picture(all_commands):
                     if event.from_user and not(event.from_me):
                         print(event.user_id)
                         if response == 'команды':
-                            commands(event.user_id)
+                            command_for_user(event.user_id)
                         elif response == 'на что я подписан?' or response == 'на что я подписан':
                             vk_session.method('messages.send', {'user_id': event.user_id,
                                                                 'message': fw.list_of_subscribers(event.user_id,
@@ -88,7 +98,7 @@ def send_picture(all_commands):
                         check_message(all_commands, response, event.user_id, vk_ses, 'user_id', fw)
                     else:
                         if response == 'команды':
-                            commands(event.chat_id)
+                            command_for_chat(event.chat_id)
                         print(event.chat_id)
                         check_message(all_commands, response, event.chat_id, vk_ses, 'chat_id', fw)
                     time.sleep(2)
