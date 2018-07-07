@@ -37,7 +37,7 @@ class subscription():
             for key in all_commands:
 
                 for element in all_commands[key][2]:
-                    print('Строка: ' +str(string)
+                    print('Строка: ' +str(string))
                     print(element)
                     print('ключ ' +str(key))
                     try:
