@@ -40,10 +40,11 @@ class subscription():
                     print('Строка: ' +str(string))
                     print(element)
                     print('ключ ' +str(key))
-                    print(d)
+                    print(d[key])
                     print(user_id)
                     try:
                         if string == element:
+                            print('ОН ПРОШЁЛ')
                             d[key].index(user_id)
                             flag = 1
                             return 'Вы уже подписаны'
