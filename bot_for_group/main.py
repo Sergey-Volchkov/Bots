@@ -107,7 +107,7 @@ def dispatch_module(vk_session, id_groups, vk, d):
 def dispatch(id_groups):
     try:
         while True:
-            f = open('../subscribers.txt', 'r')
+            f = open('subscribers.txt', 'r')
             b = eval(f.read())
             f.close()
             print(int(datetime.strftime(datetime.now(), "%H")))
@@ -122,7 +122,7 @@ def dispatch(id_groups):
         b = {}
         for key in id_groups:
             b[key] = []
-        f = open('../subscribers.txt', 'w')
+        f = open('subscribers.txt', 'w')
         f.write(str(b))
         f.close()
         dispatch(id_groups)
