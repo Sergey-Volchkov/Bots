@@ -35,10 +35,13 @@ class subscription():
             print(string)
             flag = 0
             for key in all_commands:
-                if string == all_commands[key][2][0] or string == all_commands[key][2][1]:
-                    d[key].index(user_id)
-                    flag = 1
-                    return 'Вы уже подписаны'
+                for element in all_commands[key][2]:
+                    try:
+                        if string == element:
+                            d[key].index(user_id)
+                            flag = 1
+                            return 'Вы уже подписаны'
+                    except: 'Не удалост проверить подписку'
             if flag == 0:
                 return "Запросили подписаться на что-то несуществующее, попробуйте ещё раз"
 
