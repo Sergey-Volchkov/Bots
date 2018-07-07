@@ -40,6 +40,8 @@ class subscription():
                     print('Строка: ' +str(string))
                     print(element)
                     print('ключ ' +str(key))
+                    print(d)
+                    print(user_id)
                     try:
                         if string == element:
                             d[key].index(user_id)
