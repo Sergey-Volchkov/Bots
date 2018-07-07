@@ -11,7 +11,7 @@ from multiprocessing import Process
 import itisclass
 import data
 import follow
-login, password = data.data()
+login, password = data.data('user')
 global vk_session
 vk_session = vk_api.VkApi(login, password)
 vk_session.auth()
