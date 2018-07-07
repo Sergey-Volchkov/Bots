@@ -47,8 +47,10 @@ class subscription():
 
         except:
             for key in all_commands:
-                if string == all_commands[key][2][0] or string == all_commands[key][2][1]:
-                    d[key].append(user_id)
+                for element in all_commands[key][2]:
+                    if string == all_commands[key][2]:
+                        d[key].append(user_id)
+                        break
                     break
             f = open('../subscribers.txt', 'w')
             f.write(str(d))

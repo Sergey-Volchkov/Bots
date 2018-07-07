@@ -69,7 +69,7 @@ def check_message(all_commands, response, item, vk_ses, id, fw):
         pass
 
 
-def send_picture(all_commands,request):
+def send_picture(all_commands):
     vk_ses = vk_session
     fw = follow.subscription()
     longpoll = VkLongPoll(vk_session)
@@ -83,7 +83,7 @@ def send_picture(all_commands,request):
                     if event.from_user and not(event.from_me):
                         print(event.user_id)
                         if response == 'команды':
-                            command_for_user(event.user_id, all_commands,request)
+                            command_for_user(event.user_id, all_commands)
                         elif response == 'привет':
                             vk_session.method('messages.send', {'user_id': event.user_id,
                                                                 'message': 'Привет! Напиши "команды" чтобы узнать, что может бот С:'})
@@ -141,8 +141,8 @@ def dispatch(id_groups):
 def my_commands():
         return {'cat': [-130670107,
                             ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat', 'котика', 'котики', 'коты', 'cats',
-                             'пушистый педрила', 'киса', 'котейка', 'котейки', 'кисы', 'пушистые педрилы',
-                             'пушистые пидрилы', 'пушистая педрила', 'пушастый пидрила', 'шаверма', 'шаурма', 'котя'],['котиков']],
+                              'киса', 'котейка', 'котейки', 'кисы',
+                             'шаверма', 'шаурма', 'котя'],['котиков']],
                     'dog': [-121355400,
                             ['пёсель', 'собака', 'пёс', 'doge', 'песель', 'псина', 'пёсели', 'песели', 'псины',
                              'пёсики', 'песики', 'хлеп', 'хлеб', 'булочка', 'булочки', 'собакен', 'собакены', 'dog',
@@ -154,12 +154,12 @@ def my_commands():
 def main():
     all_commands = my_commands()
     #updater.update_data(all)
-    p1 = Process(target=send_picture, args=(all_commands,'dog',))
+    p1 = Process(target=send_picture, args=(all_commands,))
     p2 = Process(target=dispatch, args=(all_commands,))
     p1.start()
     p2.start()
 
 
 if __name__ == '__main__':
-    updater.update_data(my_commands())
+    # updater.update_data(my_commands())
     main()
