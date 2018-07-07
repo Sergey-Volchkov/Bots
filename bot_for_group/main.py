@@ -34,7 +34,7 @@ def write_msg(user_id, s, attachment, id):
     vk_session.method('messages.send', {id: user_id, 'message': s, 'attachment': attachment})
 
 
-def command_for_user(user_id,all_commands,request):
+def command_for_user(user_id,all_commands):
 #     vk_session.method('messages.send', {'user_id': user_id,
 #                                         'message': "Команды для бота: \n\n"
 #                                                    "Для получения {0} напишите что-то из '{1}'.\n \n"
