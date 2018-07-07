@@ -46,7 +46,9 @@ class subscription():
                         if string == element:
                             print('ОН ПРОШЁЛ')
                             d[key].index(user_id)
+                            print('падает перед флагом')
                             flag = 1
+                            print('не может вернуть')
                             return 'Вы уже подписаны'
                     except: 'Не удалось проверить подписку'
             if flag == 0:
