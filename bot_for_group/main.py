@@ -127,9 +127,8 @@ def dispatch(id_groups):
         f.close()
         dispatch(id_groups)
 
-
-def main():
-    all_commands = {'cat': [-130670107,
+def my_commands():
+        return {'cat': [-130670107,
                             ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat', 'котика', 'котики', 'коты', 'cats',
                              'пушистый педрила', 'киса', 'котейка', 'котейки', 'кисы', 'пушистые педрилы',
                              'пушистые пидрилы', 'пушистая педрила', 'пушастый пидрила', 'шаверма', 'шаурма', 'котя'],
@@ -141,6 +140,9 @@ def main():
                     'loli': [-101072212, ['лоли', 'лольки', 'loli', 'лолька', 'лоля', 'лоликон'], 'лолей'],
                     'fox': [-123223613, ['лиса', 'лисы', 'лисичка', 'лисички', 'fox', 'фокс', 'фоксы', 'foxes'], 'лис'],
                     'owl': [-113854206, ['совы', 'совушки', 'сов', 'owl', 'owls','сова'], 'сов']}
+        
+def main():
+    all_commands = my_commands()
     #updater.update_data(all)
     p1 = Process(target=send_picture, args=(all_commands,'dog',))
     p2 = Process(target=dispatch, args=(all_commands,))
@@ -149,4 +151,5 @@ def main():
 
 
 if __name__ == '__main__':
+    updater.update_data(my_commands())
     main()
