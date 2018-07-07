@@ -3,6 +3,8 @@ class subscription():
         print('парсим')
         if type_fw == 0:
             string = string.split('я хочу подписаться на ')[1]
+            if string == 'пёселей':
+                string = 'песелей'
             return self.follow(string, user_id, all_commands)
         else:
             string = string.split('я хочу отписаться от ')[1]
@@ -34,32 +36,19 @@ class subscription():
                 print('Не получилось прочитать файл')
             print(string)
             flag = 0
-            for key in all_commands:
 
-                for element in all_commands[key][2]:
-                    print('Строка: ' +str(string))
-                    print(element)
-                    print('ключ ' +str(key))
-                    print(d[key])
-                    print(user_id)
-                    try:
-                        if string == element:
-                            print('ОН ПРОШЁЛ')
-                            d[key].index(user_id)
-                            print('падает перед флагом')
-                            flag = 1
-                            print('не может вернуть')
-                            return 'Вы уже подписаны'
-                    except: 'Не удалось проверить подписку'
+            for key in all_commands:
+                if string == all_commands[key][2]:
+                    d[key].index(user_id)
+                    flag = 1
+                    return 'Вы уже подписаны'
             if flag == 0:
                 return "Запросили подписаться на что-то несуществующее, попробуйте ещё раз"
 
         except:
             for key in all_commands:
-                for element in all_commands[key][2]:
-                    if string == all_commands[key][2]:
-                        d[key].append(user_id)
-                        break
+                if string == all_commands[key][2]:
+                    d[key].append(user_id)
                     break
             f = open('subscribers.txt', 'w')
             f.write(str(d))
@@ -81,12 +70,9 @@ class subscription():
             f.close()
             flag = 0
             for key in all_commands:
-                for element in all_commands[key][2]:
-                    try:
-                        if string == element:
-                            flag =1
-                            return (self.del_from_file(d, user_id, key))
-                    except:pass
+                if string == all_commands[key][2]:
+                    flag =1
+                    return (self.del_from_file(d, user_id, key))
             if flag == 0:
                 return "Запросили отписаться от чего-то несуществующего"
         except:
@@ -102,7 +88,9 @@ class subscription():
             for key in all_commands:
                 try:
                     d[key].index(user_id)
-                    buf += ' ' + str(all_commands[key][2][0])
+                    if len(buf) >= 2:
+                        buf+=', '
+                    buf += ' ' + str(all_commands[key][2])
                 except:
                     pass
             if len(buf) > 2:
