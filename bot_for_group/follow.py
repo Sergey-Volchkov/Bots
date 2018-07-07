@@ -25,7 +25,7 @@ class subscription():
         try:
             # Проверяем, не записывается ли человек повторно
             print('Открываем файл...')
-            f = open('../subscribers.txt', 'r')
+            f = open('subscribers.txt', 'r')
             print('Файл открыли')
             try:
                 d = eval(f.read())
@@ -37,8 +37,6 @@ class subscription():
             for key in all_commands:
 
                 for element in all_commands[key][2]:
-                    print(element)
-                    print(string)
                     try:
                         if string == element:
                             d[key].index(user_id)
@@ -55,7 +53,7 @@ class subscription():
                         d[key].append(user_id)
                         break
                     break
-            f = open('../subscribers.txt', 'w')
+            f = open('subscribers.txt', 'w')
             f.write(str(d))
             return 'Вы успешно подписаны на ' + string
         finally:
@@ -63,21 +61,24 @@ class subscription():
 
     def del_from_file(self, d, user_id, name):
         d[name].remove(user_id)
-        f = open('../subscribers.txt', 'w')
+        f = open('subscribers.txt', 'w')
         f.write(str(d))
         f.close()
         return 'Они больше вас не побеспокоят'
 
     def unfollow(self, string, user_id, all_commands):
         try:
-            f = open('../subscribers.txt', 'r')
+            f = open('subscribers.txt', 'r')
             d = eval(f.read())
             f.close()
             flag = 0
             for key in all_commands:
-                if string == all_commands[key][2][0] or string == all_commands[key][2][1]:
-                    flag =1
-                    return (self.del_from_file(d, user_id, key))
+                for element in all_commands[key][2]:
+                    try:
+                        if string == element:
+                            flag =1
+                            return (self.del_from_file(d, user_id, key))
+                    except:pass
             if flag == 0:
                 return "Запросили отписаться от чего-то несуществующего"
         except:
@@ -88,12 +89,12 @@ class subscription():
     def list_of_subscribers(self, user_id, all_commands):
         buf = ''
         try:
-            f = open('../subscribers.txt', 'r')
+            f = open('subscribers.txt', 'r')
             d = eval(f.read())
             for key in all_commands:
                 try:
                     d[key].index(user_id)
-                    buf += ' ' + str(all_commands[key][2])
+                    buf += ' ' + str(all_commands[key][2][0])
                 except:
                     pass
             if len(buf) > 2:
