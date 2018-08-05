@@ -25,6 +25,8 @@ def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
     if id == 'user_id':
         write_msg(item, 'Держи!', attachment, id)
+        if item == 74601770:
+            vk_session.method('messages.send', {id: item, 'message': attachment})
         if id_group == -121355400 and item != 111312042:
             write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
     else:
@@ -113,6 +115,8 @@ def dispatch_module(vk_session, id_groups, vk, d):
             for element in d[key]:
                 try:
                     print('Отправляем ' + str(key) + str(element))
+                    if element == 74601770:
+                        vk_session.method('messages.send', {'user_id': element, 'message': attachment})
                     write_msg(element, ' ', attachment, 'user_id')
                     time.sleep(5)
                 except Exception as er:
@@ -131,8 +135,7 @@ def dispatch(id_groups):
         print(int(datetime.strftime(datetime.now(), "%H")))
         if 22 > int(datetime.strftime(datetime.now(), "%H")) + 3 >= 8:
             dispatch_module(vk_session, id_groups, vk, d)
-        print('В сон на 60 минут')
-
+        print('В сон на 3 часа')
     # except FileNotFoundError:
     #     print('Файла нет')
     #     d = {'пёсели': [], 'котики': [], 'лольки': [], }

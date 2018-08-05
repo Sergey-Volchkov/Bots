@@ -14,7 +14,7 @@ def get_photos(vk_session, id_group,vk):
             buf.append('photo' + str(id_group) + '_' + str(element['id']))
         attachment = ','.join(buf)
 #         print('Время после получения пикчи '+str(time.ctime(time.time())))
-#         print(attachment)
+        print(attachment)
         return attachment
     except:
        return get_photos(vk_session, id_group, vk)
