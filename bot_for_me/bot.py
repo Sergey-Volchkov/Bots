@@ -126,30 +126,23 @@ def dispatch_module(vk_session, id_groups, vk, d):
 
 
 def dispatch(id_groups):
-    # try:
+
     while True:
         time.sleep(10800)
         f = open('../subscribers.txt', 'r')
         d = eval(f.read())
         f.close()
         print(int(datetime.strftime(datetime.now(), "%H")))
-        if 22 > int(datetime.strftime(datetime.now(), "%H")) + 3 >= 8:
+        if 22 > int(datetime.strftime(datetime.now(), "%H"))  >= 8:
             dispatch_module(vk_session, id_groups, vk, d)
         print('В сон на 3 часа')
-    # except FileNotFoundError:
-    #     print('Файла нет')
-    #     d = {'пёсели': [], 'котики': [], 'лольки': [], }
-    #     f = open('../subscribers.txt', 'w')
-    #     f.write(str(d))
-    #     f.close()
-    #     dispatch()
+
 
 
 def main():
     all_commands = {'cat': [-130670107,
                             ['котик', 'кошка', 'кот', 'котенок', 'котяра', 'cat', 'котика', 'котики', 'коты', 'cats',
-                             'пушистый педрила', 'киса', 'котейка', 'котейки', 'кисы', 'пушистые педрилы',
-                             'пушистые пидрилы', 'пушистая педрила', 'пушастый пидрила', 'шаверма', 'шаурма', 'котя'],
+                              'киса', 'котейка', 'котейки', 'кисы', 'шаверма', 'шаурма', 'котя'],
                             'котиков'],
                     'dog': [-121355400,
                             ['пёсель', 'собака', 'пёс', 'doge', 'песель', 'псина', 'пёсели', 'песели', 'псины',
