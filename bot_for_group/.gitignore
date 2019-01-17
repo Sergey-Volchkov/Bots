@@ -1,0 +1,10 @@
+__pycache__/
+data.py
+/*.txt
+/*.json
+/connection_to_database.py
+/create_bd_scrypt.py
+/test.py
+/test2.py
+/.idea
+/*.sql

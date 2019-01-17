@@ -1,107 +1,141 @@
-class subscription():
-    def parser(self, string, type_fw, user_id, all_commands):
-        print('парсим')
-        if type_fw == 0:
-            string = string.split('я хочу подписаться на ')[1]
-            if string == 'пёселей':
-                string = 'песелей'
-            return self.follow(string, user_id, all_commands)
-        else:
-            string = string.split('я хочу отписаться от ')[1]
-            return self.unfollow(string, user_id, all_commands)
+from connection_to_database import connect
+import re
 
-    def check(self, string, user_id, all_commands):
+
+class subscription():
+    def check(self, string, user_id):
         print('Проверяем наличие совпадений в строке')
         if string.find('я хочу подписаться') != -1:
             try:
-                return self.parser(string, 0, user_id, all_commands)
+                return self.parser(string, 0, user_id)
             except:
                 return 'Неверно написали строку'
         elif string.find('я хочу отписаться') != -1:
             try:
-                return self.parser(string, 1, user_id, all_commands)
+                return self.parser(string, 1, user_id)
             except:
                 return 'Неверно написали строку'
 
-    def follow(self, string, user_id, all_commands):
+    def parser(self, string, type_fw, user_id):
+        print('Парсим')
+        if type_fw == 0:
+            string = string.split('я хочу подписаться на ')[1]
+            string = re.sub("ё", "е", str(string))
+            print('Распарсили')
+            return self.follow(string, user_id)
+        else:
+            string = string.split('я хочу отписаться от ')[1]
+            return self.unfollow(string, user_id)
+
+
+
+    def follow(self, string, user_id):
+        # Проверяем, не записывается ли человек повторно
+        con = connect()
+        # Делаем запрос к бд в таблицу с подписчиками имеется ли запись по подписке
         try:
-            # Проверяем, не записывается ли человек повторно
-            print('Открываем файл...')
-            f = open('subscribers.txt', 'r')
-            print('Файл открыли')
-            try:
-                d = eval(f.read())
-                print('Прочитали файл')
-            except:
-                print('Не получилось прочитать файл')
-            print(string)
-            flag = 0
+            with con.cursor() as cursor:
+                print('Делаем запрос к бд на проверку наличия возможности подписки')
+                cursor.execute(
+                    """select contentname from contenttype where id = (select contentname from testword where word = '{0}')""".format(string))
+            key = cursor.fetchall()[0][0]
 
-            for key in all_commands:
-                if string == all_commands[key][2]:
-                    d[key].index(user_id)
-                    flag = 1
-                    return 'Вы уже подписаны'
-            if flag == 0:
-                return "Запросили подписаться на что-то несуществующее, попробуйте ещё раз"
-
-        except:
-            for key in all_commands:
-                if string == all_commands[key][2]:
-                    d[key].append(user_id)
-                    break
-            f = open('subscribers.txt', 'w')
-            f.write(str(d))
-            return 'Вы успешно подписаны на ' + string
-        finally:
-            f.close()
-
-    def del_from_file(self, d, user_id, name):
-        d[name].remove(user_id)
-        f = open('subscribers.txt', 'w')
-        f.write(str(d))
-        f.close()
-        return 'Они больше вас не побеспокоят'
-
-    def unfollow(self, string, user_id, all_commands):
-        try:
-            f = open('subscribers.txt', 'r')
-            d = eval(f.read())
-            f.close()
-            flag = 0
-            for key in all_commands:
-                if string == all_commands[key][2]:
-                    flag =1
-                    return (self.del_from_file(d, user_id, key))
-            if flag == 0:
-                return "Запросили отписаться от чего-то несуществующего"
-        except:
-            return 'Не удалось отписаться'
-        finally:
-            f.close()
-
-    def list_of_subscribers(self, user_id, all_commands):
-        buf = ''
-        try:
-            f = open('subscribers.txt', 'r')
-            d = eval(f.read())
-            for key in all_commands:
-                try:
-                    d[key].index(user_id)
-                    if len(buf) >= 2:
-                        buf+=', '
-                    buf += ' ' + str(all_commands[key][2])
-                except:
-                    pass
-            if len(buf) > 2:
-                return 'Вы подписаны на' + buf
+            # Потом в эту команду добавить проверку по медиатипу
+            with con.cursor() as cursor:
+                print('Проверяем подписан ли человек уже')
+                cursor.execute(
+                    """select count(*) from subscriber where (idUser={0}) and (contentName=(select id from contenttype where contentname ='{1}')) and (mediaName=(select id from mediatype where medianame='picture'))""".format(
+                        user_id, key))
+            if cursor.fetchall()[0][0] != 0:
+                con.close()
+                return 'Вы уже подписаны'
             else:
-                return 'Вы ни на что не подписаны'
-        except:
-            return 'Произошла ошибка при выведении списка подписок'
+                print('Проверяем если ли человек в базе данных с id')
+                with con.cursor() as cursor:
+                    cursor.execute("""select count(*) from idUser where id={0}""".format(user_id))
+                    if cursor.fetchall()[0][0] == 0:
+                        print('Этот подписчик ещё не был ни на что подписан, добавляем его')
+                        cursor.execute("""INSERT INTO idUser VALUES({0})""".format(user_id))
+                con.commit()
+                print('Подписываем на то, что он хотел')
+                # В дальнейшем модифицировать и сделать возможным подписку на гифки с видосиками
+                with con.cursor() as cursor:
+                    print('До запроса')
+                    cursor.execute("""INSERT INTO subscriber(iduser,contentname,medianame) VALUES((select id from bot_bd.iduser where id ={0}),
+                                   (select id from contenttype where contentname='{1}'),
+                                   (select id from mediatype where medianame='picture'))""".format(user_id, key))
+                    print('Подписка прошла успешно')
 
-    def main_f(self, string, user_id, all_commands):
+                con.commit()
+                con.close()
+                return 'Вы успешно подписаны на ' + string
+
+        except:
+            return 'Запросили подписаться на что-то несуществующее, попробуйте ещё раз'
+
+    def del_from_file(self, user_id, key):
+        con = connect()
+        with con.cursor() as cursor:
+            cursor.execute(
+                """select id from subscriber where (idUser={0}) and (contentName= (select id from contenttype where contentname ='{1}'))""".format(
+                    user_id, key))
+        if len(cursor.fetchall())!=0:
+            with con.cursor() as cursor:
+                print('Убираем подписку на ' + (key))
+                cursor.execute(
+                    """delete from subscriber where (idUser={0}) and (contentName= (select id from contenttype where contentname ='{1}'))""".format(
+                        user_id, key))
+            con.commit()
+            with con.cursor() as cursor:
+                print('Проверяем подписан ли на что-то ещё пользователь ')
+                cursor.execute(
+                    """select count(*) from subscriber where idUser={0}""".format(user_id))
+            if cursor.fetchall()[0][0] == 0:
+                print('Если нет, удаляем его совсем везде')
+                with con.cursor() as cursor:
+                    cursor.execute("""delete from iduser where id={0}""".format(user_id))
+                con.commit()
+            con.close()
+            return 'Они больше вас не побеспокоят'
+        con.close()
+        return 'Вы на это не подписаны'
+    def unfollow(self, string, user_id):
         try:
-            return self.check(string, user_id, all_commands)
+            print(string)
+            con = connect()
+            with con.cursor() as cursor:
+                print('Делаем запрос к бд на проверку наличия возможности отпписки')
+                cursor.execute(
+                    """select contentname from contenttype where id = (select contentname from testword where word = '{0}')""".format(string))
+            key = cursor.fetchall()[0][0]
+            return (self.del_from_file(user_id, key))
+
+        except:
+            return "Запросили отписаться от чего-то несуществующего"
+
+    def list_of_subscribers (self, user_id):
+        buf1 = ''
+        try:
+            con = connect()
+            # переделать если будет добавлена возможность подписки на различные медиатайпы
+            with con.cursor() as cursor:
+                cursor.execute(
+                    """select word from testword where contentname in (select contentName from subscriber where (idUser= {0}) and (medianame = (select id from mediatype where medianame ='picture')))""".format(
+                        user_id))
+            buf = list(map(list, cursor.fetchall()))
+            if len(buf)!=0:
+                buf = [item for sublist in buf for item in sublist]
+                print(buf)
+                buf1 = (', '.join(buf))
+                con.close()
+                return 'Вы подписаны  ' + buf1
+            else:
+                con.close()
+                return 'Вы пока ни на что не подписаны'
+        except: return 'Произошла ошибка при выведении списка подписок'
+
+    def main_f(self, string, user_id):
+        try:
+            return self.check(string, user_id)
         except:
             pass
