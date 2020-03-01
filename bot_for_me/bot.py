@@ -1,5 +1,6 @@
 import sys
 
+
 sys.path.insert(0, '../')
 from vk_api.longpoll import VkLongPoll, VkEventType
 
@@ -24,18 +25,23 @@ def choice_group_and_send(mas, response, item, vk_ses, id_group, id):
     mas.index(response)
     attachment = itisclass.get_photos(vk_ses, id_group, vk)
     if id == 'user_id':
+        print("отправляем сообщение!")
         write_msg(item, 'Держи!', attachment, id)
-        if item == 74601770:
-            vk_session.method('messages.send', {id: item, 'message': attachment})
-        if id_group == -121355400 and item != 111312042:
-            write_msg(111312042, 'Кто-то попросил у меня пёселей, но я и тебе пришлю!', attachment, id)
+        print("Сообщение должно было быть отправлено!")
+
+        #if item == 74601770:
+        #   vk_session.method('messages.send', {id: item, 'message': attachment})
+
     else:
         print(item)
         write_msg(item, 'Держите!', attachment, id)
 
 
 def write_msg(user_id, s, attachment, id):
-    vk_session.method('messages.send', {id: user_id, 'message': s, 'attachment': attachment})
+    print(user_id,s,attachment,id)
+    vk_session.method('messages.send', {'peer_id': user_id, 'message': s, 'attachment': attachment,'random_id': random.randint(-2147483648, +2147483648)})
+    print('сообщение отправлено')
+
 
 
 def command_for_user(user_id):
@@ -73,7 +79,7 @@ def check_message(all_commands, response, item, vk_ses, id, fw):
     if id == 'user_id':
         try:
             vk_session.method('messages.send', {'user_id': item,
-                                                'message': fw.main_f(response, item, all_commands)})
+                                                'message': fw.main_f(response, item, all_commands),'random_id': random.randint(-2147483648, +2147483648)})
         except:
             pass
 
@@ -89,14 +95,14 @@ def send_picture(all_commands):
                     print('Сообщение пришло в ' + str(datetime.strftime(datetime.now(), "%H:%M:%S")))
                     response = event.text.lower()
                     print(response)
-                    if event.from_user and not(event.from_me):
+                    if event.from_user :
                         print(event.user_id)
                         if response == 'команды':
                             command_for_user(event.user_id)
                         elif response == 'на что я подписан?' or response == 'на что я подписан':
                             vk_session.method('messages.send', {'user_id': event.user_id,
                                                                 'message': fw.list_of_subscribers(event.user_id,
-                                                                                                  all_commands)})
+                                                                                                  all_commands),'random_id': random.randint(-2147483648, +2147483648)})
                         check_message(all_commands, response, event.user_id, vk_ses, 'user_id', fw)
                     else:
                         if response == 'команды':
@@ -116,7 +122,7 @@ def dispatch_module(vk_session, id_groups, vk, d):
                 try:
                     print('Отправляем ' + str(key) + str(element))
                     if element == 74601770:
-                        vk_session.method('messages.send', {'user_id': element, 'message': attachment})
+                        vk_session.method('messages.send', {'user_id': element, 'message': attachment,'random_id': random.randint(-2147483648, +2147483648)})
                     write_msg(element, ' ', attachment, 'user_id')
                     time.sleep(5)
                 except Exception as er:
@@ -145,7 +151,7 @@ def main():
                               'киса', 'котейка', 'котейки', 'кисы', 'шаверма', 'шаурма', 'котя'],
                             'котиков'],
                     'dog': [-121355400,
-                            ['пёсель', 'собака', 'пёс', 'doge', 'песель', 'псина', 'пёсели', 'песели', 'псины',
+                            ['пёсель','пес', 'собака', 'пёс', 'doge', 'песель', 'псина', 'пёсели', 'песели', 'псины',
                              'пёсики', 'песики', 'хлеп', 'хлеб', 'булочка', 'булочки', 'собакен', 'собакены', 'dog',
                              'dogs'], 'песелей'],
                     'loli': [-101072212, ['лоли', 'лольки', 'loli', 'лолька', 'лоля', 'лоликон'], 'лолей'],
@@ -153,10 +159,11 @@ def main():
                     'owl': [-113854206, ['совы', 'совушки', 'сов', 'owl', 'owls','сова'], 'сов']}
 
     p1 = Process(target=send_picture, args=(all_commands,))
-    p2 = Process(target=dispatch, args=(all_commands,))
+    #p2 = Process(target=dispatch, args=(all_commands,))
     p1.start()
-    p2.start()
+    #p2.start()
 
 
 if __name__ == '__main__':
     main()
+
