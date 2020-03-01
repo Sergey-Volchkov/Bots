@@ -13,8 +13,8 @@ import data
 import follow
 login, password = data.data('user')
 global vk_session
-vk_session = vk_api.VkApi(login, password)
-vk_session.auth()
+vk_session = vk_api.VkApi(login, password, app_id=2685278)
+vk_session.auth(token_only=True)
 global vk
 global id_groups
 vk = vk_session.get_api()
