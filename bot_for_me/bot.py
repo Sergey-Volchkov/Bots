@@ -159,9 +159,9 @@ def main():
                     'owl': [-113854206, ['совы', 'совушки', 'сов', 'owl', 'owls','сова'], 'сов']}
 
     p1 = Process(target=send_picture, args=(all_commands,))
-    #p2 = Process(target=dispatch, args=(all_commands,))
+    p2 = Process(target=dispatch, args=(all_commands,))
     p1.start()
-    #p2.start()
+    p2.start()
 
 
 if __name__ == '__main__':
